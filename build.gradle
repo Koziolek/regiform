@@ -1,0 +1,49 @@
+apply plugin: 'java'
+
+apply plugin: 'jacoco'
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+repositories {
+    jcenter()
+    mavenCentral()
+
+    maven {
+        url "http://repository.jetbrains.com/all"
+    }
+
+}
+
+
+buildscript {
+    ext.spek_version = '1.0.25'
+    ext.kotlin_version = '1.0.2'
+
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+    }
+}
+
+dependencies {
+    compile 'org.slf4j:slf4j-api:1.7.21'
+    compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    compile 'org.wasabi:wasabi:0.1.182'
+
+    testCompile "org.jetbrains.spek:spek:$spek_version"
+    testCompile 'junit:junit:4.12'
+    testCompile 'org.easytesting:fest-assert:1.4'
+}
+jacocoTestReport {
+    reports {
+        xml.enabled = true
+        html.enabled = true
+    }
+}
+
+
+apply plugin: "kotlin"

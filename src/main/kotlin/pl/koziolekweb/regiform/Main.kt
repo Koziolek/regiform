@@ -68,4 +68,3 @@ class CustomStaticFileInterceptor(val folder: String, val useDefaultFile: Boolea
     }
 }
 
-

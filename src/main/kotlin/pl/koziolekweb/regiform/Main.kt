@@ -18,11 +18,9 @@ fun main(args: Array<String>) {
 
     appServer.enableContentNegotiation()
 
-    val resource = appServer.javaClass.getResource("/public")
+    val resource = "".javaClass.getResource("/public")
 
-    val staticInterceptor = CustomStaticFileInterceptor(resource.path, true)
-    appServer.intercept(staticInterceptor)
-//    appServer.serveStaticFilesFromFolder(resource.path)
+    appServer.serveStaticFiles(resource.path)
 
     appServer.post("/register", register())
 
@@ -35,36 +33,5 @@ private fun register(): RouteHandler.() -> Unit = {
     println(
             request.bodyParams
     )
-}
-
-class CustomStaticFileInterceptor(val folder: String, val useDefaultFile: Boolean = false, val defaultFile: String = "index.html") : Interceptor() {
-
-    private fun existingDir(path: String): Boolean {
-        val file = File(path)
-        return file.exists() && file.isDirectory
-    }
-
-    private fun existingFile(path: String): Boolean {
-        val file = File(path)
-        return file.exists() && file.isFile
-    }
-
-    override fun intercept(request: Request, response: Response): Boolean {
-        return when (request.method) {
-            HttpMethod.GET -> {
-                val fullPath = "${folder}${request.uri}"
-                when {
-                    existingFile(fullPath) -> {
-                        response.setFileResponseHeaders(fullPath); false
-                    }
-                    existingDir(fullPath) && useDefaultFile -> {
-                        response.setFileResponseHeaders("${fullPath}/${defaultFile}"); false
-                    }
-                    else -> true
-                }
-            }
-            else -> true
-        }
-    }
 }
 

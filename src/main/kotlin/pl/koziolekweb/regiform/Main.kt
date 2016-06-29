@@ -22,7 +22,7 @@ fun main(args: Array<String>) {
 
     val staticInterceptor = CustomStaticFileInterceptor(resource.path, true)
     appServer.intercept(staticInterceptor)
-//    appServer.serveStaticFilesFromFolder(resource.path)
+
 
     appServer.post("/register", register())
 
